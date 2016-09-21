@@ -4,6 +4,9 @@
 var router = require('express').Router();
 var request = require('request');
 var PHARMACY_ACTIVITY_CODE = 477310;
+//TODO Validar estadoClave == 'ACTIVO'
+//TODO Validar if tipoPersona == 'FISICA' => fechaFallecimiento == undefined
+//TODO Usar https://soa.afip.gob.ar/av/v1/vencimientos/<cuit> que data no este vacio
 function validateCodes(codes, activities) {
     return codes.every(code => activities.find(item => code == item));
 };
