@@ -28,7 +28,18 @@ var validatePharmacy = function(req, res) {
             var isValid = result.data.actividades != null &&
                 validateCodes([PHARMACY_ACTIVITY_CODE], result.data.actividades) &&
                 validateState(result) && validateisDead(result);
-            res.send({valid: isValid, name: result.data.nombre});
+            if (!isValid) {
+                res.send({valid: isValid, name: result.data.nombre});
+            } else {
+                request(config.afip_expiration_url + cuit, function(error, response, body) {
+                    var data = JSON.parse(body);
+                    if (error || !data.success) {
+                        res.status(400).send(error);
+                    } else {
+                        res.send({valid: data.data.length > 0, name: result.nombre});
+                    }
+                });
+            }
         }
     });
 };
