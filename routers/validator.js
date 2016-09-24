@@ -36,7 +36,7 @@ var validatePharmacy = function(req, res) {
                     if (error || !data.success) {
                         res.status(400).send(error);
                     } else {
-                        res.send({valid: data.data.length > 0, name: result.nombre});
+                        res.send({valid: data.data.length > 0, name: result.data.nombre});
                     }
                 });
             }
