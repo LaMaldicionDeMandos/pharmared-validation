@@ -4,7 +4,6 @@
 var router = require('express').Router();
 var request = require('request');
 var PHARMACY_ACTIVITY_CODE = 477310;
-//TODO Usar https://soa.afip.gob.ar/av/v1/vencimientos/<cuit> que data no este vacio
 function validateCodes(codes, activities) {
     return codes.every(code => activities.find(item => code == item));
 };
@@ -44,6 +43,11 @@ var validatePharmacy = function(req, res) {
     });
 };
 
+var validatePharmacist = function(req, res) {
+    res.send({valid: true});
+}
+
 router.get('/pharmacy/:cuit', validatePharmacy);
+router.get('/pharmacist/:leg', validatePharmacist);
 
 module.exports = router;
