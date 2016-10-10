@@ -4,6 +4,7 @@
 var router = require('express').Router();
 var request = require('request');
 var PHARMACY_ACTIVITY_CODE = 477310;
+var DRUGSTORE_ACTIVITY_CODE = 464310;
 function validateCodes(codes, activities) {
     return codes.every(code => activities.find(item => code == item));
 };
@@ -16,7 +17,7 @@ function validateisDead(item) {
     return item.data.tipoPersona != 'FISICA' || !item.data.fechaFallecimiento;
 };
 
-var validatePharmacy = function(req, res) {
+function validateEntity(req, res, codes) {
     var cuit = req.params.cuit;
     request(config.afip_url + cuit, function(error, response, body) {
         var result = JSON.parse(body);
@@ -25,7 +26,7 @@ var validatePharmacy = function(req, res) {
         } else {
             console.log(body);
             var isValid = result.data.actividades != null &&
-                validateCodes([PHARMACY_ACTIVITY_CODE], result.data.actividades) &&
+                validateCodes(codes, result.data.actividades) &&
                 validateState(result) && validateisDead(result);
             if (!isValid) {
                 res.send({valid: isValid, name: result.data.nombre});
@@ -41,6 +42,14 @@ var validatePharmacy = function(req, res) {
             }
         }
     });
+}
+
+var validatePharmacy = function(req, res) {
+    return validateEntity(req, res, [PHARMACY_ACTIVITY_CODE]);
+};
+
+var validateDrugstore = function(req, res) {
+    return validateEntity(req, res, [DRUGSTORE_ACTIVITY_CODE]);
 };
 
 var validatePharmacist = function(req, res) {
@@ -48,6 +57,7 @@ var validatePharmacist = function(req, res) {
 }
 
 router.get('/pharmacy/:cuit', validatePharmacy);
+router.get('/drugstore/:cuit', validateDrugstore);
 router.get('/pharmacist/:leg', validatePharmacist);
 
 module.exports = router;
