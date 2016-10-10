@@ -5,6 +5,7 @@ var router = require('express').Router();
 var request = require('request');
 var PHARMACY_ACTIVITY_CODE = 477310;
 var DRUGSTORE_ACTIVITY_CODE = 464310;
+var LABORATORY_ACTIVITY_CODE = 210010;
 function validateCodes(codes, activities) {
     return codes.every(code => activities.find(item => code == item));
 };
@@ -52,12 +53,17 @@ var validateDrugstore = function(req, res) {
     return validateEntity(req, res, [DRUGSTORE_ACTIVITY_CODE]);
 };
 
+var validateLaboratory = function(req, res) {
+    return validateEntity(req, res, [LABORATORY_ACTIVITY_CODE]);
+};
+
 var validatePharmacist = function(req, res) {
     res.send({valid: true});
-}
+};
 
 router.get('/pharmacy/:cuit', validatePharmacy);
 router.get('/drugstore/:cuit', validateDrugstore);
+router.get('/laboratory/:cuit', validateLaboratory);
 router.get('/pharmacist/:leg', validatePharmacist);
 
 module.exports = router;
