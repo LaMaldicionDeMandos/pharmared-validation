@@ -1,0 +1,146 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "pharmared api Validator",
+        "description": "Api relacionada con las validaciones de las entidades",
+        "contact": {
+            "name": "Pharmared API team",
+            "email": "pasutmarcelo@gmail.com"
+        }
+    },
+    "host": "farmared.com.ar",
+    "basePath": "/api/validator",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/pharmacy/{cuit}": {
+            "get": {
+                "description": "Valida que la fermacia sea tal y que se encuentra en actividad",
+                "operationId": "validatePharmacy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cuit",
+                        "description": "cuit de la farmacia",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validacion de la farmacia",
+                        "schema": {
+                            "$ref": "#/definitions/validation"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en algun paso de la validacion"
+                    }
+                }
+            }
+        },
+        "/drugstore/{cuit}": {
+            "get": {
+                "description": "Valida que la drogueria sea tal y que se encuentra en actividad",
+                "operationId": "validateDrugstore",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cuit",
+                        "description": "cuit de la drogueria",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validacion de la drogueria",
+                        "schema": {
+                            "$ref": "#/definitions/validation"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en algun paso de la validacion"
+                    }
+                }
+            }
+        },
+        "/laboratory/{cuit}": {
+            "get": {
+                "description": "Valida que el laboratorio sea tal y que se encuentra en actividad",
+                "operationId": "validateLaboratory",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cuit",
+                        "description": "cuit del laboratorio",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validacion del laboratorio",
+                        "schema": {
+                            "$ref": "#/definitions/validation"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en algun paso de la validacion"
+                    }
+                }
+            }
+        },
+        "/pharmacist/{leg}": {
+            "get": {
+                "description": "Valida que farmaceutico sea tal",
+                "operationId": "validatePharmacist",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "leg",
+                        "description": "Legajo del farmaceutico",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validacion del farmaceutico",
+                        "schema": {
+                            "$ref": "#/definitions/validation"
+                        }
+                    },
+                    "400": {
+                        "description": "Error en algun paso de la validacion"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "validation": {
+            "type": "object",
+            "required": [
+                "valid",
+                "name"
+            ],
+            "properties": {
+                "valid": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
